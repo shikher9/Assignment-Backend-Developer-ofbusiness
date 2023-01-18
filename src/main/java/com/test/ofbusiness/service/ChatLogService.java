@@ -25,6 +25,7 @@ public class ChatLogService {
         }
 
         userChatData.put(chatLogEntry.getTimestamp(), chatLogEntry);
+        chatData.put(userId, userChatData);
         return chatLogEntry;
     }
 
@@ -35,14 +36,18 @@ public class ChatLogService {
         Map<Long, ChatLogEntry> userChatData = chatData.get(userId);
         int limitVal = limit.orElse(10);
 
-        List<ChatLogEntry> resChatLogsEntries = new ArrayList<>(limitVal);
-        List<ChatLogEntry> chatLogEntries = (List)userChatData.values();
+        if(userChatData == null) {
+            return Collections.emptyList();
+        }
 
-        String startMsgIdVal = startMsgID.orElse(chatLogEntries.get(0).getMsgId());
+
+        List<ChatLogEntry> resChatLogsEntries = new ArrayList<>(limitVal);
+
+        String startMsgIdVal = startMsgID.orElse(null);
         boolean addToRes = false;
 
-        for(ChatLogEntry chatLogEntry : chatLogEntries) {
-            if(chatLogEntry.getMsgId().equals(startMsgIdVal)) {
+        for(ChatLogEntry chatLogEntry : userChatData.values()) {
+            if(startMsgIdVal == null || chatLogEntry.getMsgId().equals(startMsgIdVal)) {
                 addToRes = true;
             }
 

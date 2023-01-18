@@ -3,6 +3,7 @@ package com.test.ofbusiness.controller;
 import com.test.ofbusiness.api.body.ChatLogReq;
 import com.test.ofbusiness.model.ChatLogEntry;
 import com.test.ofbusiness.service.ChatLogService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
 @RequestMapping(value = "/chatlogs")
 public class ChatLogController {
 
+    @Autowired
     private ChatLogService chatLogService;
 
     @PostMapping("/{user}")
@@ -35,9 +37,9 @@ public class ChatLogController {
         chatLogService.deleteChatlogEntries(userId);
     }
 
-    @GetMapping("/{user}/{msgid}")
-    public void getChatLogEntries(@PathVariable(value = "user") String userId,
-                                                @PathVariable(value = "user") String msgId) {
+    @DeleteMapping("/{user}/{msgId}")
+    public void deleteChatLogEntry(@PathVariable(value = "user") String userId,
+                                   @PathVariable(value = "msgId") String msgId) {
         chatLogService.deleteChatlogEntry(userId, msgId);
     }
 
