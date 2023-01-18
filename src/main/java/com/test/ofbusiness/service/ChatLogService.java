@@ -66,6 +66,11 @@ public class ChatLogService {
 
     public void deleteChatlogEntry(String userId, String msgId) {
         Map<Long, ChatLogEntry> userChatData = chatData.get(userId);
+
+        if(userChatData == null) {
+            throw new ChatLogEntryNotFoundException();
+        }
+
         Long entryToDelete = null;
 
         for(Map.Entry<Long, ChatLogEntry> chatLogMapEntry : userChatData.entrySet()) {
